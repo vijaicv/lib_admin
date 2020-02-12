@@ -46,7 +46,6 @@ public class circulationServiceController {
 
 	
 	//getting the value from properties file which is already defined
-	
 	@Value("${circulationService.url}")
 	private String url;
 
