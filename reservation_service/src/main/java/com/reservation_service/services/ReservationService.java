@@ -42,7 +42,7 @@ public class ReservationService {
 		}
 		
 		ReservationMessage r_message = new ReservationMessage(listOfReservedStudents, "Book has returned");
-		template.send("newtopic", r_message);
+		template.send("notify", r_message);
 	}
 
 }
