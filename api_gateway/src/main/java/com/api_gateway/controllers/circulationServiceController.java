@@ -34,13 +34,12 @@ public class circulationServiceController {
 	
 	// creating a rest template inorder to communicate with the remaining service that are
 	// independently running.
-	RestTemplate rt = new RestTemplate();
+	RestTemplate rt;
 	
 	//creating an instance of http header from spring boot
-	HttpHeaders headers = new HttpHeaders();
+	HttpHeaders headers;
 	
 	//Creating a multivalued map to set as the parameter for the request body
-	MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
 	
 	HttpEntity<MultiValueMap<String, Integer>> request;
 
@@ -59,6 +58,7 @@ public class circulationServiceController {
 	public @ResponseBody ResponseEntity<String> borrowBook(@RequestParam(value = "uid") int uid,
 			@RequestParam(value = "bookid") int bookid) {
 		
+		rt = new RestTemplate();
 		
 		//updating the url wrt the service
 		String updatedurl= url+"borrow";
@@ -66,11 +66,17 @@ public class circulationServiceController {
 		
 		
 		//Setting up the http header as to communicate with the service using http method.
+		headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
 		//creating a multivalued map inorder to pass the parameters to the service.
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+
 		map.add("userid", uid);
 		map.add("bookid", bookid);
+		
+		System.out.println("Bookis: "+uid+" "+bookid);
+
 
 		//creating the http entity so as to encapsule the header and body for giving it the service as 
 		// a single entity
@@ -105,7 +111,11 @@ public class circulationServiceController {
 		//Setting up the http header as to communicate with the service using http method.
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		
+		System.out.println("Bookis: "+uid+" "+bookid);
+		
 		//creating a multivalued map inorder to pass the parameters to the service.
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+
 		map.add("userid", uid);
 		map.add("bookid", bookid);
 		

@@ -21,13 +21,12 @@ public class reservationServiceController {
 
 	// creating a rest template inorder to communicate with the remaining service that are
 	// independently running.
-	RestTemplate rt = new RestTemplate();
+	RestTemplate rt;
 	
 	//creating an instance of http header from spring boot
-	HttpHeaders headers = new HttpHeaders();
+	HttpHeaders headers;
 	
 	//Creating a multivalued map to set as the parameter for the request body
-	MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
 	
 	HttpEntity<MultiValueMap<String, Integer>> request;
 
@@ -47,15 +46,19 @@ public class reservationServiceController {
 			@RequestParam(value = "bookid") int bookid) {
 		
 		
+		rt = new RestTemplate();
 		//updating the url wrt the service
 		String updatedurl= url;
 		System.out.println("URL: "+updatedurl);
 		
 		
 		//Setting up the http header as to communicate with the service using http method.
+		headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
 		//creating a multivalued map inorder to pass the parameters to the service.
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+
 		map.add("userId", uid);
 		map.add("bookId", bookid);
 

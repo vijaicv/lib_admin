@@ -20,13 +20,12 @@ public class adminBookServiceController {
 
 	// creating a rest template inorder to communicate with the remaining service that are
 	// independently running.
-	RestTemplate rt = new RestTemplate();
+	RestTemplate rt;
 
 	//creating an instance of http header from spring boot
-	HttpHeaders headers = new HttpHeaders();
+	HttpHeaders headers;
 
 	//Creating a multivalued map to set as the parameter for the request body
-	MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
 
 	HttpEntity<MultiValueMap<String, String>> request;
 
@@ -44,10 +43,15 @@ public class adminBookServiceController {
 		System.out.println("URL: "+updatedurl);
 
 
+		rt = new RestTemplate();
+		
 		//Setting up the http header as to communicate with the service using http method.
+		headers =  new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
 		//creating a multivalued map inorder to pass the parameters to the service.
+		MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+
 		map.add("title", bName);
 		map.add("author", authorName);
 
