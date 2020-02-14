@@ -25,10 +25,6 @@ public class KafkaConsumer {
 	int finePerDay;
 	
 	
-	@KafkaListener(topics = "return", groupId = "lib_admin")
-	public void recieve(ReturnMessage message) {
-		System.out.println("message recieved"+ message.getDate());
-	}
 	
 
 	@KafkaListener(topics = "return", groupId = "lib_admin")
