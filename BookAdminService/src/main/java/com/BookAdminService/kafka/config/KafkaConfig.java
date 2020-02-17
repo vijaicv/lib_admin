@@ -20,7 +20,7 @@ public class KafkaConfig {
 	@Bean
 	public ProducerFactory<String, Book> producerFactory(){
 		Map<String,Object> config=new HashMap<>();
-		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"10.15.1.211:9092");//consumer port
+		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"192.168.43.79:9092");//consumer port
 		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,JsonSerializer.class);
 		config.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);//to avoid class information

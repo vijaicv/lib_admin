@@ -9,4 +9,6 @@ import com.UserAdminService.model.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 
 	List<User> findTopByOrderByIdDesc();
+
+	User findByName(String string);
 }

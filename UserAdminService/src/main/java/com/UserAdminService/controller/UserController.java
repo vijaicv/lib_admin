@@ -10,75 +10,43 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.UserAdminService.model.User;
+import com.UserAdminService.model.UserMessage;
 import com.UserAdminService.repository.UserRepository;
+import com.UserAdminService.services.UserService;
 @RestController
 public class UserController {
 
 	@Autowired
-	private UserRepository userrepo;
-	@Autowired
-	private KafkaTemplate<String, User> kafkaTemplate;
-	int id;
-	private static final String TOPIC1="newuser";
-	private static final String TOPIC2="updateuser";
-	private static final String TOPIC3="deleteuser";
+	UserService userService;
 	@PostMapping("/adduser")
-	public String addUser(@RequestParam("name") String name,@RequestParam("role") String role,@RequestParam("email") String email, Model m) {
-		User user=new User();
-		user.setName(name);
-		user.setRole(role);
-		user.setEmail(email);
-		try {
-			userrepo.save(user);
-			m.addAttribute("user",user);
-			List<User> userlist=(List<User>) userrepo.findTopByOrderByIdDesc();
-			User u=userlist.get(0);
-			//System.out.println(""+u.getId());
-			//attach message to kafka here
-			
-			kafkaTemplate.send(TOPIC1,u);//optional
-			return "user id is "+u.getId();
-		}
-		catch(Exception e) {
-			return "failed";
-		}
+	public UserMessage addUser(@RequestParam("name") String name,@RequestParam("role") String role,@RequestParam("email") String email) {
+		System.out.println("adding new user");
+		UserMessage msg=new UserMessage();
+		msg=userService.add(name,role,email);
+		return msg;
 	}
-	//update user
+	//finding user
 	@PostMapping("/finduser")//accessing one record using id
-	public User findBook(@RequestParam("id") int id, Model m) {
-		User user=userrepo.findById(id).orElseGet(()->null);
-		m.addAttribute("user",user);//passing data to form
-		return user;//string after space is not displayed
+	public UserMessage findUser(@RequestParam("id") int id) {
+		System.out.println("finding the user");
+		UserMessage msg=new UserMessage();
+		msg=userService.findUser(id);
+		return msg;
 	}
+	//updating user
 	@PostMapping("/updateuser")
-	public String updateUser(@RequestParam("id") int id,@RequestParam("name") String name,@RequestParam("role") String role,@RequestParam("email") String email, Model m) {
-		User user=new User();
-		user.setId(id);
-		user.setName(name);
-		user.setRole(role);
-		user.setEmail(email);
-		try {
-			userrepo.save(user);
-			m.addAttribute("user",user);
-			kafkaTemplate.send(TOPIC2,user);//optional
-			return "user-update-success";
-		}
-		catch(Exception e) {
-			return "user-update-failure";
-		}
+	public UserMessage updateUser(@RequestParam("id") int id,@RequestParam("name") String name,@RequestParam("role") String role,@RequestParam("email") String email) {
+		System.out.println("updating user");
+		UserMessage msg=new UserMessage();
+		msg=userService.updateUser(id,name,role,email);
+		return msg;
 	}
-	//delete
+	//deleting user
 	@PostMapping("/deleteuser")//accessing one record using id
-	public String deleteUser(@RequestParam("id") int id, Model m) {
-		User user=userrepo.findById(id).orElseGet(()->null);
-		m.addAttribute("user",user);
-		try {
-			userrepo.deleteById(id);
-			kafkaTemplate.send(TOPIC3,user);//optional
-			return "user-delete-success";
-		}
-		catch(Exception e) {
-			return "user-delete-failure";
-		}
+	public UserMessage deleteUser(@RequestParam("id") int id) {
+		System.out.println("deleting user");
+		UserMessage msg=new UserMessage();
+		msg=userService.deleteBook(id);
+		return msg;
 	}
 }
