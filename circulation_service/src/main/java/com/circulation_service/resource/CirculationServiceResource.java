@@ -37,16 +37,12 @@ public class CirculationServiceResource {
 
 		if(cdel!=null)
 		{
-			circulationRepository.delete(cdel);
-		
-			//Sending message to the Message System
-			Circulation c = new Circulation();
-			c.setBookId(bookid);
-			c.setUserId(userid);
-			c.setDate(new Date());
 			
-			kt.send(topic, c);
-		
+			System.out.println("Book Returned\n"+userid+"\t"+bookid);
+			
+			//Sending message to the Message System
+			kt.send(topic, cdel);
+			circulationRepository.delete(cdel);
 			return "Successfully returned book";
 		}
 		else
@@ -58,15 +54,46 @@ public class CirculationServiceResource {
 	@PostMapping("/borrow")
 	public String borrowBook(@RequestParam("userid") int userid,@RequestParam("bookid") int bookid)
 	{
+		Circulation[] cborrow=circulationRepository.findAllByUserId(userid);
+		int brln=0;
+		brln=cborrow.length;
+		
+		if(brln<=3)
+		{
+		System.out.println(userid+"\t"+bookid);
 		Circulation circulation=new Circulation();
 		
 		circulation.setUserId(userid);
 		circulation.setBookId(bookid);
 		circulation.setDate(new Date());
-		System.out.println("Test borrow"+new Date());
+		System.out.println("Book Borrowed id :"+bookid);
 		circulationRepository.save(circulation);
 		
 		return "Book Borrowed";
+		}
+		else
+		{
+			return "Book Borrowing limit is Three";
+		}
+	}
+	
+	@GetMapping("/booklist")
+	public String bookList(@RequestParam("userid")int userid)
+	{
+		Circulation[] c=circulationRepository.findAllByUserId(userid);
+		
+		System.out.println("Book allocated list Test\n");
+		int ln=c.length;
+		String str=new String();
+		
+		for(int i=0;i<ln;i++)
+		{
+			str=str+Integer.toString(c[i].getBookId())+",";
+		}
+		
+		System.out.println(str);
+		
+		return str;
 	}
 	
 

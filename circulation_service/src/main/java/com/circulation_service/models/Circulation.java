@@ -17,9 +17,7 @@ public class Circulation {
 	int userId;
 	int bookId;
 	Date date;
-	
-	
-	
+		
 	public int getId() {
 		return id;
 	}
