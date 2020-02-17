@@ -27,6 +27,9 @@ public class CirculationServiceResource {
 	private static final String  topic = "return";
 	
 	@Autowired
+	private static final String topicborrow="borrow";
+	
+	@Autowired
 	private CirculationRepository circulationRepository;
 	
 	//Deleting the data from database of the returned book
@@ -57,8 +60,9 @@ public class CirculationServiceResource {
 		Circulation[] cborrow=circulationRepository.findAllByUserId(userid);
 		int brln=0;
 		brln=cborrow.length;
+		System.out.println(brln);
 		
-		if(brln<=3)
+		if(brln<3)
 		{
 		System.out.println(userid+"\t"+bookid);
 		Circulation circulation=new Circulation();
@@ -68,6 +72,7 @@ public class CirculationServiceResource {
 		circulation.setDate(new Date());
 		System.out.println("Book Borrowed id :"+bookid);
 		circulationRepository.save(circulation);
+		kt.send(topicborrow, circulation);
 		
 		return "Book Borrowed";
 		}
