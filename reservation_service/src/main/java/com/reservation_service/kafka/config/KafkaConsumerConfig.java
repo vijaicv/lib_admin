@@ -33,10 +33,6 @@ public class KafkaConsumerConfig {
 		props.put(ErrorHandlingDeserializer2.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
 		props.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
-		props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.reservation_service.models.BookReturnMessage");
-		props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.reservation_service");
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, "json");
-
 		return props;
 	}
 

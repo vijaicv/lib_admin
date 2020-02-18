@@ -22,14 +22,14 @@ public class ReservationService {
 	
 	@Autowired
 	KafkaTemplate<String, ReservationMessage> template;
-	
-	public void reserve(int userId,int bookId) {
+
+	public Reservation reserve(int userId,int bookId) {
 		Reservation reservation = new Reservation();
 		reservation.setBookId(bookId);
 		reservation.setUserId(userId);
 		reservation.setDate(new Date());
 		
-		reservationRepo.save(reservation);
+		return reservationRepo.save(reservation);
 	}
 	
 	

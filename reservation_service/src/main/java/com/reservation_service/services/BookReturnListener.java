@@ -15,7 +15,7 @@ public class BookReturnListener {
 	@Autowired
 	ReservationService reservationService;
 	
-	@KafkaListener(topics="return", groupId="json")
+	@KafkaListener(topics="return", groupId="lib_admin")
 	public void listen(BookReturnMessage message) {
 		//TODO: change print statements to logs
 	    System.out.println("recieved book return event "+ message.getBookId()+" T = "+new Date().toString() );

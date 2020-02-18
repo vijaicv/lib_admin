@@ -18,6 +18,19 @@ public class Reservation {
 	int bookId;
 	Date date;
 	
+	public Reservation() {
+		
+	}
+	
+	
+	public Reservation(int reservationId, int userId, int bookId, Date date) {
+		super();
+		this.reservationId = reservationId;
+		this.userId = userId;
+		this.bookId = bookId;
+		this.date = date;
+	}
+	
 	
 	public int getUserId() {
 		return userId;

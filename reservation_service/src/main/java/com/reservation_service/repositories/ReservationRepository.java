@@ -13,5 +13,4 @@ import com.reservation_service.models.Reservation;
 public interface ReservationRepository extends JpaRepository<Reservation, Integer>{
 	List<Reservation> findByBookId(int bookId);
 	List<Reservation> findByDateLessThan(Date date);
-	List<Reservation> deleteByDateLessThan(Date date);
 }
