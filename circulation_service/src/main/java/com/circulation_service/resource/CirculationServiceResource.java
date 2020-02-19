@@ -20,13 +20,12 @@ import com.circulation_service.repositories.CirculationRepository;
 @RequestMapping("/circulation")
 public class CirculationServiceResource {
 
-	//kafka topic name given
 	
 	@Autowired
 	KafkaTemplate<String, Circulation> kt;
-	private static final String  topic = "return";
 	
-	@Autowired
+	//kafka topic names
+	private static final String  topic = "return";
 	private static final String topicborrow="borrow";
 	
 	@Autowired
@@ -40,9 +39,6 @@ public class CirculationServiceResource {
 
 		if(cdel!=null)
 		{
-			
-			System.out.println("Book Returned\n"+userid+"\t"+bookid);
-			
 			//Sending message to the Message System
 			kt.send(topic, cdel);
 			circulationRepository.delete(cdel);
@@ -57,14 +53,13 @@ public class CirculationServiceResource {
 	@PostMapping("/borrow")
 	public String borrowBook(@RequestParam("userid") int userid,@RequestParam("bookid") int bookid)
 	{
+		
 		Circulation[] cborrow=circulationRepository.findAllByUserId(userid);
 		int brln=0;
 		brln=cborrow.length;
-		System.out.println(brln);
-		
+		//Checking the borrow limit for user
 		if(brln<3)
 		{
-		System.out.println(userid+"\t"+bookid);
 		Circulation circulation=new Circulation();
 		
 		circulation.setUserId(userid);
@@ -72,6 +67,7 @@ public class CirculationServiceResource {
 		circulation.setDate(new Date());
 		System.out.println("Book Borrowed id :"+bookid);
 		circulationRepository.save(circulation);
+		//Sending message to messaging system that book is boorowed
 		kt.send(topicborrow, circulation);
 		
 		return "Book Borrowed";
@@ -82,24 +78,32 @@ public class CirculationServiceResource {
 		}
 	}
 	
-	@GetMapping("/booklist")
+	@PostMapping("/booklist")
 	public String bookList(@RequestParam("userid")int userid)
 	{
+		//Retrieving all records of the particular user
 		Circulation[] c=circulationRepository.findAllByUserId(userid);
-		
-		System.out.println("Book allocated list Test\n");
-		int ln=c.length;
-		String str=new String();
-		
-		for(int i=0;i<ln;i++)
+		System.out.println("Array :"+c.length);
+		if(c.length>0)
 		{
-			str=str+Integer.toString(c[i].getBookId())+",";
+			System.out.println("Book allocated list Test\n");
+			int ln=c.length;
+			String str=new String();
+		
+			for(int i=0;i<ln;i++)
+			{
+				str=str+Integer.toString(c[i].getBookId())+",";
+			}
+		
+			System.out.println("Book id list :"+str);
+			//Returning the Book ids as a comma seperated string
+			return str;
+			}
+			else
+			{
+				return "No books are borrowed";
+			}
 		}
-		
-		System.out.println(str);
-		
-		return str;
-	}
 	
 
 	

@@ -17,7 +17,20 @@ public class Circulation {
 	int userId;
 	int bookId;
 	Date date;
+	
+	public Circulation() {
 		
+	}
+		
+	public Circulation(int id, int userId, int bookId, Date date) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.bookId = bookId;
+		this.date = date;
+	}
+	
+	
 	public int getId() {
 		return id;
 	}
