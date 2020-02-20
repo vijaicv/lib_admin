@@ -108,6 +108,7 @@ public class circulationServiceController {
 		String updatedurl = url+"return";
 		System.out.println("URL:"+updatedurl);
 		
+		rt = new RestTemplate();
 		//Setting up the http header as to communicate with the service using http method.
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		
@@ -123,6 +124,40 @@ public class circulationServiceController {
 		// a single entity
 		request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
 
+		/*
+		 * calling the service using the rest template post method
+		 * getting back the response as a http entity.
+		 * storing it in a variable called message
+		 */
+		ResponseEntity<String> message = rt.postForEntity( updatedurl, request , String.class );
+
+		
+		//returning to the user
+		return message;
+
+		
+	}
+	
+	@PostMapping("/list")
+	public @ResponseBody HttpEntity<String> listingOfBook(@RequestParam(value = "uid") int uid){
+		
+		//updating the url wrt service endpoint
+		String updatedurl = url+"booklist";
+		System.out.println("URL:"+updatedurl);
+		
+		rt = new RestTemplate();
+		//Setting up the http header as to communicate with the service using http method.
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		
+		//creating a multivalued map inorder to pass the parameters to the service.
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+
+		map.add("userid", uid);
+		
+		//creating the http entity so as to encapsule the header and body for giving it the service as 
+		// a single entity
+		request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
 		/*
 		 * calling the service using the rest template post method
 		 * getting back the response as a http entity.
