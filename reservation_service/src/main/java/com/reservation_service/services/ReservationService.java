@@ -28,7 +28,6 @@ public class ReservationService {
 		reservation.setBookId(bookId);
 		reservation.setUserId(userId);
 		reservation.setDate(new Date());
-		
 		return reservationRepo.save(reservation);
 	}
 	
@@ -43,6 +42,14 @@ public class ReservationService {
 		
 		ReservationMessage r_message = new ReservationMessage(listOfReservedStudents, "Book has returned");
 		template.send("notify", r_message);
+	}
+	
+	public void deleteUserWhoClaimed(int userId, int bookId) {
+		
+		Reservation r = reservationRepo.findByUserIdAndBookId(userId, bookId);
+		reservationRepo.delete(r);
+		System.out.println("User Deleted");
+		
 	}
 
 }

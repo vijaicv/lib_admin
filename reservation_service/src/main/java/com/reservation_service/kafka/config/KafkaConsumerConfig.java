@@ -16,6 +16,7 @@ import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
+import com.reservation_service.models.BookBorrow;
 import com.reservation_service.models.BookReturnMessage;
 
 @Configuration
@@ -56,5 +57,26 @@ public class KafkaConsumerConfig {
 		factory.setErrorHandler(new SeekToCurrentErrorHandler());
 		return factory;
 	}
+	
+	@Bean
+	public ConsumerFactory<String,BookBorrow> borrowConsumerFactory() {
+
+		return new DefaultKafkaConsumerFactory<>(
+				consumerConfigs(),
+				new StringDeserializer(),
+				new ErrorHandlingDeserializer2(new  JsonDeserializer<>(BookBorrow.class)) );
+	}
+	
+	@Bean
+	public ConcurrentKafkaListenerContainerFactory<String, BookBorrow> borrowKafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, BookBorrow> factory =
+		new ConcurrentKafkaListenerContainerFactory<>();
+		factory.setConsumerFactory(borrowConsumerFactory());
+		factory.setErrorHandler(new SeekToCurrentErrorHandler());
+		return factory;
+	}
+	
+	
+	
 
 }
