@@ -6,6 +6,7 @@ public class ReturnMessage {
 	int userId;
 	int bookId;
 	Date date;
+	//String cause;
 	
 	public int getUserId() {
 		return userId;
@@ -25,6 +26,12 @@ public class ReturnMessage {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+//	public String getCause() {
+//		return cause;
+//	}
+//	public void setCause(String cause) {
+//		this.cause = cause;
+//	}
+//	
 
 }

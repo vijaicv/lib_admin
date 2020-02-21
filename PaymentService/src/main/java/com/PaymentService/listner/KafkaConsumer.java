@@ -18,10 +18,10 @@ public class KafkaConsumer {
 	@Autowired
 	PaymentRepository paymentRepo;
 	
-//	@Value("${borrow-day-limit}")
+	@Value("${borrow-day-limit}")
 	int maxDaysOfBorrowing;
 	
-//	@Value("${fine-per-day}")
+	@Value("${fine-per-day}")
 	int finePerDay;
 	
 	
@@ -29,31 +29,31 @@ public class KafkaConsumer {
 
 	@KafkaListener(topics = "return", groupId = "lib_admin")
 	public void consume(ReturnMessage message) {
-		
-		System.out.println("consumed message is "+ message.getDate());
-		
-		
+		System.out.println("recieved return event "+ message.getDate());
 		Date today = new Date();
 		long diff = today.getTime() - message.getDate().getTime();
 		long diffdays = diff/(24*60*60*1000);
 		int borrowed_days = Math.round(diffdays);
-		
-		
 		int fine=0;
-		System.out.println("book was borrowed for "+ borrowed_days + "days");
+		System.out.println("book was borrowed for "+ borrowed_days + " days");
+		Payment payment = new Payment();
 		if(borrowed_days>maxDaysOfBorrowing) {
 			System.out.println("borrow limit exceeded ");
-			fine=borrowed_days*finePerDay;
+			fine=(borrowed_days-maxDaysOfBorrowing)*finePerDay;
 			
-			Payment payment = new Payment();
+			payment = new Payment();
 			payment.setBookId(message.getBookId());
 			payment.setDate(message.getDate());
 			payment.setUserId(message.getUserId());
+			payment.setFine(fine);
+			payment.setCause("borrow limit exceeded ");
 			
 			paymentRepo.save(payment);
 		}
 		System.out.println("fine = "+fine);
+		System.out.println("cause "+payment.getCause());
+		
 		
 	}
 
-}
+} 

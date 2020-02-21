@@ -17,40 +17,37 @@ import com.PaymentService.repository.PaymentRepository;
 
 @RestController
 public class PaymentController {
-	
+
 	@Autowired
 	private PaymentRepository paymentRepo;
-	
-	
-//	@GetMapping("/")
-//	public String add() {
-//		Payment p = new Payment();
-//		p.setBookId(204);
-//		p.setDate(new Date());
-//		p.setFine(20);
-//		p.setUserId(1);
-//		
-//		
-//		paymentRepo.save(p);
-//		return "success";
-//	}
-	
-	@KafkaListener(topics = "return", groupId = "lib_admin")
-	public void recieve(ReturnMessage message) {
-		System.out.println("message recieved"+ message.getDate());
-	}
-	
-	
+
+
+	//	@GetMapping("/")
+	//	public String add() {
+	//		Payment p = new Payment();
+	//		p.setBookId(204);
+	//		p.setDate(new Date());
+	//		p.setFine(20);
+	//		p.setUserId(1);
+	//		
+	//		
+	//		paymentRepo.save(p);
+	//		return "success";
+	//	}
+
+
 	@PostMapping("/showfine")
-	private String addUser(@RequestParam("userId")Integer userId){
-    List<Payment> paymentobj = paymentRepo.findByUserId(userId);
-    int totalFine = 0;
-    for(Payment p:paymentobj) {
-    	totalFine+=p.getFine();
-    	
-    }
-		
-		return "Total fine for user is "+ totalFine;
+	private String addFine(@RequestParam("userId")Integer userId){
+		List<Payment> paymentobj = paymentRepo.findByUserId(userId);
+		int totalFine = 0;
+		String causeOfFine = null;
+		for(Payment p:paymentobj) {
+			totalFine+=p.getFine();
+			if(p.getCause() != null) {
+				causeOfFine = p.getCause();
+			}
+		}
+		return "Total fine for user is "+ totalFine+"\nCause for the fine is "+causeOfFine;
 
 	}
 
