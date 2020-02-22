@@ -1,6 +1,7 @@
 package com.api_gateway.controllers;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,7 @@ public class circulationServiceController {
 	
 	// creating a rest template inorder to communicate with the remaining service that are
 	// independently running.
+	@Autowired
 	RestTemplate rt;
 	
 	//creating an instance of http header from spring boot
@@ -58,7 +60,6 @@ public class circulationServiceController {
 	public @ResponseBody ResponseEntity<String> borrowBook(@RequestParam(value = "uid") int uid,
 			@RequestParam(value = "bookid") int bookid) {
 		
-		rt = new RestTemplate();
 		
 		//updating the url wrt the service
 		String updatedurl= url+"borrow";
@@ -108,7 +109,6 @@ public class circulationServiceController {
 		String updatedurl = url+"return";
 		System.out.println("URL:"+updatedurl);
 		
-		rt = new RestTemplate();
 		//Setting up the http header as to communicate with the service using http method.
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		
@@ -145,7 +145,6 @@ public class circulationServiceController {
 		String updatedurl = url+"booklist";
 		System.out.println("URL:"+updatedurl);
 		
-		rt = new RestTemplate();
 		//Setting up the http header as to communicate with the service using http method.
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		

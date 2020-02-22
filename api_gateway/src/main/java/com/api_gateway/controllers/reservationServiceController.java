@@ -1,5 +1,6 @@
 package com.api_gateway.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ public class reservationServiceController {
 
 	// creating a rest template inorder to communicate with the remaining service that are
 	// independently running.
+	@Autowired
 	RestTemplate rt;
 	
 	//creating an instance of http header from spring boot
@@ -46,7 +48,6 @@ public class reservationServiceController {
 			@RequestParam(value = "bookid") int bookid) {
 		
 		
-		rt = new RestTemplate();
 		//updating the url wrt the service
 		String updatedurl= url;
 		System.out.println("URL: "+updatedurl);
