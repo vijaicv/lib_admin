@@ -1,5 +1,6 @@
 package com.api_gateway.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ public class adminBookServiceController {
 
 	// creating a rest template inorder to communicate with the remaining service that are
 	// independently running.
+	@Autowired
 	RestTemplate rt;
 
 	//creating an instance of http header from spring boot
@@ -43,7 +45,6 @@ public class adminBookServiceController {
 		System.out.println("URL: "+updatedurl);
 
 
-		rt = new RestTemplate();
 		
 		//Setting up the http header as to communicate with the service using http method.
 		headers =  new HttpHeaders();
